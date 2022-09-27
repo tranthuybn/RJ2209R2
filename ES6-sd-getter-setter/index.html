@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        class Person{
+            constructor(name){
+                this.nameVal = name;
+            }
+            get name() {
+                return this.nameVal
+            }
+            set name(newName) {
+                this.nameVal = newName
+            }
+            walk(){
+                console.log('Đi thẳng lưng')
+            }
+        }
+        class Programmer extends Person {
+            constructor(name, language){
+                super(name)
+                this.languageVal = language
+            }
+            writeCode(){
+                console.log('Biết viết code')
+            }
+            get language() {
+                return this.languageVal
+            }
+            set language(newLanguage){
+                this.languageVal = newLanguage
+            }
+        }
+        const thuy = new Person('Thuy')
+        const dat = new Programmer('Dat')
+        dat.language = 'PHP'
+        console.log(thuy)
+        console.log(dat)
+    </script>
+</body>
+</html>
