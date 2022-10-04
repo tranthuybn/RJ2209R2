@@ -5,34 +5,51 @@ const showGiphy= document.querySelector('.show-giphy')
 const amountResult = document.querySelector('.amountResult')
 const message = document.querySelector('.message')
 
-btnSearch.onclick = () => {
-    axios.get(`http://api.giphy.com/v1/gifs/search?q=${valueSearch.value}&api_key=oy4dPH2oVoycIOSUN5fnMalRLwddYAKN`)
-    .then(function (response) {
-      handleData(response.data.data)
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+// get data
+const API_key = 'oy4dPH2oVoycIOSUN5fnMalRLwddYAKN'
+let giphyArr = []
+let htmls = []
+let temp = ''
+const getImage = (keyword, amount) => {
+  temp = keyword
+  axios.get(`http://api.giphy.com/v1/gifs/search`, {
+    params: {
+      q : keyword,
+      api_key: API_key
+    }
+  })
+  .then(function (response) {
+    let resArr  = response.data.data
+    console.log(giphyArr.length)
+    for(let i = giphyArr.length ; i < (amount <= 50 ? amount : 50); i++){
+      giphyArr.push(resArr[i].images.preview_gif.url)
+    }
+    displayGiphy()
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 }
-function handleData(data){
-  let htmls = ''
-  if(amountResult.value <= data.length){
-    message.textContent = `Trả về ${amountResult.value} trong tổng số ${data.length} giphy`
-    for(let i = 0; i < amountResult.value; i++){
-      htmls += `
-      <img src="https://media.giphy.com/media/${data[i].id}/giphy.gif" alt="">
-      `
-    }
-  } else {
-    message.textContent = `Trả về tất cả ${data.length} giphy`
-    for(let i = 0; i < data.length; i++){
-      htmls += `
-      <img src="https://media.giphy.com/media/${data[i].id}/giphy.gif" alt="">
-      `
-    }
+const displayGiphy = () => {
+  console.log(htmls.length)
+  for(let i = htmls.length; i < giphyArr.length; i++){
+    htmls.push(`<img src="${giphyArr[i]}" alt="">`)
   }
-  showGiphy.innerHTML = htmls
+  showGiphy.innerHTML = htmls.join(' ')
 }
+
+btnSearch.onclick = () => {
+  let keyword = valueSearch.value
+  let amount = amountResult.value
+  console.log(temp, keyword)
+  if(temp !== keyword && temp !== '') {
+    giphyArr = []
+    htmls = []
+    console.log('reset')
+  }
+  getImage(keyword,amount)
+}
+// Remove giphy
 btnRemove.onclick = () => {
   valueSearch.value = ''
   showGiphy.innerHTML = ''
