@@ -2,7 +2,6 @@ class Pokemon{
     constructor(){
         this.limit = 100
         this.offset = 0
-        this.unitSetOffset = 100
         this.urlNext = ''
         this.urlPrevious = ''
         this.pokemonList = []
@@ -10,11 +9,11 @@ class Pokemon{
         this.preBtn = document.querySelector('.pre-btn')
         this.nextBtn = document.querySelector('.next-btn')
     }
-    async getData(limit, offset){
+    async getData(){
         const response = await axios.get('https://pokeapi.co/api/v2/pokemon', {
             params: {
-                limit,
-                offset
+                limit: this.limit,
+                offset: this.offset
             }
         })
         .then(res => res)
@@ -37,29 +36,19 @@ class Pokemon{
         })
         this.pokemonListTable.innerHTML = htmls
     }
-    handlePaginations(button){
-        let url = ''
-        switch (button.className) {
-            case 'next-btn' : 
-               url = this.urlNext
-               this.unitSetOffset = Math.abs(this.unitSetOffset)
-               break
-            case 'pre-btn' :
-                url = this.urlPrevious
-                this.unitSetOffset = -Math.abs(this.unitSetOffset)
-                break
+    handlePaginations(){
+        this.nextBtn.onclick = () => {
+            if(this.urlNext){
+                this.offset += this.limit
+                this.callAPI()
+            }
         }
-        if(url){
-            button.disabled = false
-            this.offset += this.unitSetOffset
-            this.getData(this.limit,this.offset).then(res => this.handleDataFromAPI(res))
-        } else {
-            button.disabled = true
+        this.preBtn.onclick = () => {
+            if(this.urlPrevious){
+                this.offset -= this.limit
+                this.callAPI()
+            }
         }
-    }
-    handleEvent(){
-        this.nextBtn.onclick = (e) => {this.handlePaginations(e.target)}
-        this.preBtn.onclick = (e) => {this.handlePaginations(e.target)}
     }
     handleDataFromAPI(res){
         let {results, next, previous} = res.data
@@ -67,10 +56,15 @@ class Pokemon{
         this.urlPrevious = previous
         this.pokemonList = results
         this.displayPokemonList()
+        this.preBtn.classList.toggle('disable', !this.urlPrevious)
+        this.nextBtn.classList.toggle('disable', !this.urlNext)
+    }
+    callAPI(){
+        this.getData().then(res => this.handleDataFromAPI(res))
     }
     init() {
-        this.getData(this.limit,this.offset).then(res => this.handleDataFromAPI(res))
-        this.handleEvent()
+        this.callAPI()
+        this.handlePaginations()
     }
 }
 const po = new Pokemon()
