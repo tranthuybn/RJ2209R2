@@ -1,0 +1,37 @@
+.wrap {
+    background-color: #fafafa;
+    padding-top: 30px;
+    width: 305px;
+    height: calc(100vh - var(--default-layout-header-height));
+    .listGroup {
+        padding: 0 16px;
+        .category {
+            color: #202020;
+            font-size: 14px;
+            text-decoration: none;
+        }
+        .listGroup-item {
+            display: flex;
+            justify-content: center;
+            align-items: start;
+            padding: 5px 0;
+            background: transparent;
+            border: 0;
+            border-radius: 3px;
+            &:hover {
+                background: #eee;
+                cursor: pointer;
+            }
+            .number {
+                color: #aaa;
+                font-size: 12px;
+                font-weight: 400;
+            }
+        }
+        .listGroup-item.active {
+            .number {
+                color: var(--primary);
+            }
+        }
+    }
+}

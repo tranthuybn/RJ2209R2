@@ -1,0 +1,13 @@
+:root {
+    --primary: #db4c3f;
+    --default-layout-header-height: 43px;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.primaryBg {
+    background-color: var(--primary);
+}

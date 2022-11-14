@@ -1,0 +1,50 @@
+@mixin light-bg-hover {
+    background: #fff;
+    color: #202020;
+}
+.inputSearchWrap {
+    background: rgba(255, 255, 255, 0.2);
+    &:hover {
+        @include light-bg-hover;
+        .formControl,
+        .btnSearch {
+            color: #202020;
+            &::placeholder {
+                color: #202020;
+            }
+        }
+    }
+    .quickSearchInput {
+        margin: 0;
+        border: 1px solid transparent;
+        border-radius: 3px;
+        outline: 0;
+        color: #fff;
+        background-color: transparent;
+    }
+    .formControl {
+        &::placeholder {
+            color: #fff;
+        }
+        &:focus {
+            @include light-bg-hover;
+            border: none;
+            box-shadow: unset;
+            &::placeholder {
+                color: #202020;
+            }
+        }
+    }
+    .btnSearch {
+        font-size: 16px;
+    }
+    .btnNav {
+        border: none;
+    }
+}
+.inputSearchWrap.inputSearch--focus {
+    width: 400px;
+    .btnNav {
+        @include light-bg-hover;
+    }
+}
